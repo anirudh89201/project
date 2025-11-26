@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity } from "react-native";
+import { View, Text, TouchableOpacity, ScrollView } from "react-native";
 import React, { useState } from "react";
 import * as DocumentPicker from "expo-document-picker";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -18,14 +18,14 @@ const ResumeUpload = () => {
 
     if (!result.canceled) {
       const asset = result.assets[0];
-
+      console.log(JSON.stringify(asset));
       // Convert DocumentPickerAsset → DocumentFile
       const fileToUpload: DocumentFile = {
         uri: asset.uri,
         name: asset.name || "resume.pdf",
         type: asset.mimeType || "application/pdf"
       };
-
+      console.log(JSON.stringify(fileToUpload));
       await uploadResume(fileToUpload);
     }
   };
@@ -38,7 +38,7 @@ const ResumeUpload = () => {
 
       {loading && <Text>Loading..</Text>}
       {error && <Text>{error}</Text>}
-      {data && <Text>Upload Successful...</Text>}
+      {data && <ScrollView><Text>{data}</Text></ScrollView>}
     </SafeAreaView>
   );
 };
