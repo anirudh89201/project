@@ -17,6 +17,12 @@ const MainLayout = () => {
         headerShown:false
       }}
       />
+      <Stack.Screen
+      name='stack-screens/QuestionScreen'
+      options={{
+        headerShown:false
+      }}
+      />
     </Stack>
   )
 }
