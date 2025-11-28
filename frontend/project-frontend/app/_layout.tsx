@@ -12,12 +12,6 @@ const MainLayout = () => {
       }}
       />
       <Stack.Screen
-      name='stack-screens/resumeUpload'
-      options={{
-        headerShown:false
-      }}
-      />
-      <Stack.Screen
       name='stack-screens/QuestionScreen'
       options={{
         headerShown:false
