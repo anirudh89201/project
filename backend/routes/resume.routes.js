@@ -5,6 +5,6 @@ import { handleUpload } from "../controllers/resume.controller.js";
 const router = express.Router();
 const upload = multer({ storage: multer.memoryStorage() });
 
-router.post("/", upload.single("resume"), handleUpload);
+router.post("/", upload.single("audio"), handleUpload);
 
 export default router;
