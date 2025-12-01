@@ -22,6 +22,18 @@ const MainLayout = () => {
         headerShown:false
       }}
       />
+      <Stack.Screen
+      name='stack-screens/PhoneNumberScreen'
+      options={{
+        headerShown:false
+      }}
+      />
+      <Stack.Screen
+      name='stack-screens/OTPScreen'
+      options={{
+        headerShown:false
+      }}
+      />
     </Stack>
   )
 }
