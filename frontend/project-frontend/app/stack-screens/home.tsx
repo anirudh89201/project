@@ -21,7 +21,7 @@ const Home = () => {
         className="bg-orange-500 rounded-xl py-4 px-6 shadow-lg active:opacity-70"
       >
         <Text className="text-white text-center text-lg font-bold">
-          Login Via Phone Number
+          Login Via Email
         </Text>
       </TouchableOpacity>
       <TouchableOpacity

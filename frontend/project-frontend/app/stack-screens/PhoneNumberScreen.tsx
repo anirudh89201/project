@@ -1,18 +1,21 @@
 import { View, Text, TextInput, TouchableOpacity, KeyboardAvoidingView, Platform } from 'react-native';
 import { useState } from 'react';
+import {sendOTP} from '../../api/sendOTP.js'
 import { router } from 'expo-router';
 
 export default function PhoneNumberScreen() {
-  const [phoneNumber, setPhoneNumber] = useState('');
+    const [EmailID, setEmailID] = useState('');
+    const [Valid,SetValid] = useState(false);
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const handleNext = async() => {
+    const response = await sendOTP(EmailID)
 
-  const handleNext = () => {
-    if (!phoneNumber || phoneNumber.length < 10) {
-      alert('Please enter a valid phone number');
-      return;
-    }
     router.push('/stack-screens/OTPScreen'); // Navigate to OTP screen
   };
-
+  const checkEmailId = (value:string) => {
+    setEmailID(value)
+    SetValid(emailRegex.test(value))
+  }
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -20,22 +23,28 @@ export default function PhoneNumberScreen() {
     >
       <View className="bg-white rounded-2xl p-6 shadow-lg">
         <Text className="text-2xl font-bold text-center text-purple-700 mb-4">
-          Enter Your Phone Number
+          Enter Your Email ID
         </Text>
 
         <TextInput
-          placeholder="Phone Number"
-          value={phoneNumber}
-          onChangeText={setPhoneNumber}
-          keyboardType="numeric"
+          placeholder="Email ID"
+          value={EmailID}
+          onChangeText={checkEmailId}
+          keyboardType="email-address"
           className="border-2 border-purple-300 rounded-xl p-4 mb-4 text-lg"
         />
 
         <TouchableOpacity
           onPress={handleNext}
-          className="bg-purple-600 rounded-xl py-4 mt-2"
+          disabled={!Valid}
+          className={`rounded-xl py-4 mt-2 ${
+            Valid ? "bg-purple-600" : "bg-gray-300"
+          }`}
+          style={{ opacity: Valid ? 1 : 0.5 }}
         >
-          <Text className="text-white text-center font-bold text-lg">
+          <Text className={`text-center font-bold text-lg ${
+            Valid ? "text-white" : "text-gray-500"
+          }`}>
             Next
           </Text>
         </TouchableOpacity>
