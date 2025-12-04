@@ -7,10 +7,10 @@ export default function PhoneNumberScreen() {
     const [EmailID, setEmailID] = useState('');
     const [Valid,SetValid] = useState(false);
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  const handleNext = async() => {
-    const response = await sendOTP(EmailID)
-
-    router.push('/stack-screens/OTPScreen'); // Navigate to OTP screen
+  const handleNext = () => {
+    // const response = await sendOTP(EmailID)
+    // console.log(response)
+    router.push({pathname:'/stack-screens/OTPScreen',params:{EmailID}}); // Navigate to OTP screen
   };
   const checkEmailId = (value:string) => {
     setEmailID(value)
