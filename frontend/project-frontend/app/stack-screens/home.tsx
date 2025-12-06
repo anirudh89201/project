@@ -1,11 +1,23 @@
 import {Image,Text, TouchableOpacity, View } from 'react-native'
-import React from 'react'
+import React, { useContext, useEffect } from 'react'
 import "../../global.css"
+import * as SecureStorage from "expo-secure-store"
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { router } from 'expo-router'
-
 const Home = () => {
-  return (
+  useEffect(() => {
+    const checkToken = async () => {
+      const token = await SecureStorage.getItemAsync("authToken");
+      console.log("Token:", token);
+  
+      if (token) {
+        router.replace("/stack-screens/QuestionScreen");
+      }
+    };
+  
+    checkToken();
+  }, []);
+    return (
     
     <SafeAreaView className="flex-1 bg-gradient-to-b from-yellow-50 via-orange-50 to-white p-6">
       {/* Lottie View Animation*/}

@@ -14,7 +14,6 @@ export const uploadAudio = async (fileUri) => {
     });
     formData.append("Question",Question)
 
-    console.log("Uploading...");
     console.log(formData)
     const response = await axiosClient.post("/upload", formData, {
       headers: { "Content-Type": "multipart/form-data" },

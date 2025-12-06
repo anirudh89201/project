@@ -6,7 +6,7 @@ export const sendOTP = async (EmailID) => {
             { EmailID }
         );
 
-        return response.data;  // success
+        return {success:true,data:response.data}  // success
     } catch (error) {
         console.log("Axios Error:", error.response?.data || error.message);
         throw new Error(error.response?.data?.message || "Something went wrong");

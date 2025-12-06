@@ -7,7 +7,6 @@ export const getReport = async (audioFile, Question) => {
     console.log("Received file:", audioFile,"Question:",Question);
     // Convert multer buffer → stream
     const audioStream = Readable.from(audioFile.buffer);
-    console.log("Hello...")
     const transcript = await Assemblyclient.transcripts.transcribe({
       audio:audioStream,
       disfluencies:true
@@ -19,6 +18,9 @@ export const getReport = async (audioFile, Question) => {
     }
     const text = transcript.text
     console.log(text)
+    if(text.length == 0){
+      throw new Error("Internal Server Error during processing of recording")
+    }
     const response = await generateReport(text,Question)
     console.log(response)
   } catch (error) {

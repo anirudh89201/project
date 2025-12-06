@@ -1,3 +1,4 @@
+import { getToken } from "../config/jwttoken.js";
 import { initiateOTP } from "../services/initiateOTP.js";
 import {getReport} from "../services/progressReport.js"
 import { otpStore } from "../store/otpStore.js";
@@ -7,8 +8,11 @@ export const handleUpload = async (req, res) => {
             return res.status(404).json({ message: "File not found" });
         }
         try {
-
             const response = await getReport(req.file,req.body.Question)
+            console.log(req.user)
+            if(req.user){
+                await SaveReportForUser(req.user,response,req.body.Question)
+            }
             return res.status(200).json({"message":`${response}`})
         } catch (error) {
            return res.status(500).json({"message":`${error.message}`})
@@ -42,10 +46,12 @@ export const sendOTP = async(req,res) => {
 }
 export const verifyOTP = async(req,res) => {
     const {OTP,EmailID} = req.body;
+    console.log(OTP + " " + EmailID)
     if(!OTP || !EmailID){
         return res.status(400).json({message:"Email and OTP are required"})
     }
     const record = otpStore[EmailID]
+    console.log(record)
     if(!record){
         return res.status(400).json({message:"OTP not found or expired"})
     }
@@ -53,10 +59,11 @@ export const verifyOTP = async(req,res) => {
         delete otpStore[EmailID]
         return res.status(405).json({message:"OTP has been expired"})
     }
-    if(OTP != record.OTP){
+    if(String(OTP) !== String(record.response)){
         return res.status(400).json({message:"Invalid OTP"})
     }
     delete otpStore[EmailID]
-    return res.status(200).json({message:"OTP Successfully verified"})
+    const token = getToken(EmailID)
+    return res.status(200).json({token,message:"OTP Successfully verified"})
     
 }

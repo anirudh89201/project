@@ -1,7 +1,9 @@
 import {Stack} from "expo-router"
 import React from 'react';
+import {AuthProvider} from "../context/auth-context.js"
 const MainLayout = () => {
   return (
+    <AuthProvider>
     <Stack
       >
       <Stack.Screen
@@ -35,6 +37,7 @@ const MainLayout = () => {
       }}
       />
     </Stack>
+    </AuthProvider>
   )
 }
 

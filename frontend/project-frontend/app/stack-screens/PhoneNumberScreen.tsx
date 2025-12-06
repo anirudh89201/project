@@ -6,11 +6,14 @@ import { router } from 'expo-router';
 export default function PhoneNumberScreen() {
     const [EmailID, setEmailID] = useState('');
     const [Valid,SetValid] = useState(false);
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  const handleNext = () => {
-    // const response = await sendOTP(EmailID)
-    // console.log(response)
-    router.push({pathname:'/stack-screens/OTPScreen',params:{EmailID}}); // Navigate to OTP screen
+    const emailRegex = /^[^\s@]+@[^\  s@]+\.[^\s@]+$/;
+  const handleNext = async() => {
+    const response = await sendOTP(EmailID)
+    if(response.success){
+      router.push({pathname:'/stack-screens/OTPScreen',params:{EmailID}}); // Navigate to OTP screen
+    }else{
+      alert("Something Went Wrong..")
+    }
   };
   const checkEmailId = (value:string) => {
     setEmailID(value)
