@@ -4,10 +4,11 @@ import "../../global.css"
 import * as SecureStorage from "expo-secure-store"
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { router } from 'expo-router'
+import { AuthContext } from '@/context/auth-context'
 const Home = () => {
+  const {token} = useContext(AuthContext)
   useEffect(() => {
     const checkToken = async () => {
-      const token = await SecureStorage.getItemAsync("authToken");
       console.log("Token:", token);
   
       if (token) {
@@ -16,7 +17,7 @@ const Home = () => {
     };
   
     checkToken();
-  }, []);
+  }, [token]);
     return (
     
     <SafeAreaView className="flex-1 bg-gradient-to-b from-yellow-50 via-orange-50 to-white p-6">

@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useContext } from "react";
 import {
   useAudioRecorder,
   AudioModule,
@@ -12,7 +12,6 @@ import { Alert } from "react-native";
 export default function useRecorder() {
   const audioRecorder = useAudioRecorder(RecordingPresets.HIGH_QUALITY);
   const recorderState = useAudioRecorderState(audioRecorder);
-
   const [duration, setDuration] = useState(0);
   const timerRef = useRef(null);
 
@@ -63,13 +62,13 @@ export default function useRecorder() {
   };
 
   // Stop
-  const stopRecording = async () => {
+  const stopRecording = async (token) => {
     try {
       stopTimer();
       await audioRecorder.stop();
       const uri = audioRecorder.uri;
       setDuration(0);
-      await uploadAudio(uri)
+      await uploadAudio(uri,token)
       return uri;
     } catch (err) {
       console.log("Error stopping:", err);

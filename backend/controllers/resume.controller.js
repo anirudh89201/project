@@ -1,4 +1,6 @@
 import { getToken } from "../config/jwttoken.js";
+import { SaveReportForUser } from "../services/SaveReport.js";
+import { getReports } from "../services/getReport.js";
 import { initiateOTP } from "../services/initiateOTP.js";
 import {getReport} from "../services/progressReport.js"
 import { otpStore } from "../store/otpStore.js";
@@ -9,9 +11,8 @@ export const handleUpload = async (req, res) => {
         }
         try {
             const response = await getReport(req.file,req.body.Question)
-            console.log(req.user)
             if(req.user){
-                await SaveReportForUser(req.user,response,req.body.Question)
+                await SaveReportForUser(req.user.EmailID,response)
             }
             return res.status(200).json({"message":`${response}`})
         } catch (error) {
@@ -67,3 +68,31 @@ export const verifyOTP = async(req,res) => {
     return res.status(200).json({token,message:"OTP Successfully verified"})
     
 }
+// export const InsertReport = async(req,res) => {
+//     if(!req.body){
+//         return res.status(204).json({message:"No content provided."})
+//     }
+//     const {EmailID,Report} = req.body;
+//     if(!EmailID || !Report){
+//         return res.status(400).json({message:"UnAuthorized user.."})
+//     }
+//     const response = await SaveReportForUser(EmailID,Report)
+//     if(!response.success){
+//         return res.status(500).json({message:"Internal Server Error"})
+//     }
+//     return res.status(500).json({message:`${JSON.stringify(response)}`}); 
+// }
+// export const GetUserReport = async (req, res) => {
+//   const emailId = req.query.emailId; // match the query param exactly
+//   if (!emailId) {
+//     return res.status(400).json({ message: "Unauthorized route.." });
+//   }
+
+//   try {
+//     const data = await getReports(emailId);
+//     return res.json(data); // no need for JSON.stringify
+//   } catch (err) {
+//     console.log("Error fetching reports:", err);
+//     return res.status(500).json({ message: "Failed to fetch reports" });
+//   }
+// };

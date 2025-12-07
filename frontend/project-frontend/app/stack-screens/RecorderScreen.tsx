@@ -1,7 +1,13 @@
 import {View,Text, TouchableOpacity,StyleSheet } from 'react-native'
-import React, { useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import useRecorder from "../../hooks/useRecorder.js"
+import { AuthContext } from '@/context/auth-context.js';
 const RecorderScreen = () => {
+  const {token} = useContext(AuthContext)
+  const handleStop = async() => {
+    console.log("Hello:=" +token)
+    await stopRecording(token)
+  }
     const {
         isRecording,
         isPaused,
@@ -52,7 +58,7 @@ const RecorderScreen = () => {
     
         {/* Done */}
         {isRecording && (
-          <TouchableOpacity style={[styles.btn, { backgroundColor: "#EF4444" }]} onPress={stopRecording}>
+          <TouchableOpacity style={[styles.btn, { backgroundColor: "#EF4444" }]} onPress={handleStop}>
             <Text style={styles.btnText}>Done</Text>
           </TouchableOpacity>
         )}

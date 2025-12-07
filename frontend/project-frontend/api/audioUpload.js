@@ -1,10 +1,11 @@
+import { useContext } from "react";
 import { axiosClient } from "../api/axiosClient";
 let Question = ""
 export const SetTopic = (Topic) => {
   console.log(Topic)
   Question = Topic
 } 
-export const uploadAudio = async (fileUri) => {
+export const uploadAudio = async (fileUri,token) => {
   try {
     const formData = new FormData();
     formData.append("audio", {
@@ -15,8 +16,11 @@ export const uploadAudio = async (fileUri) => {
     formData.append("Question",Question)
 
     console.log(formData)
+    console.log(token)
     const response = await axiosClient.post("/upload", formData, {
-      headers: { "Content-Type": "multipart/form-data" },
+      headers: { "Content-Type": "multipart/form-data" ,
+                  "Authorization":`Bearer ${token}`
+              },
     });
     console.log("U cam here?")
     return response.data; // server response

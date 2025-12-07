@@ -1,44 +1,9 @@
-import {Stack} from "expo-router"
-import React from 'react';
+import {Slot} from "expo-router"
 import {AuthProvider} from "../context/auth-context.js"
-const MainLayout = () => {
-  return (
+export default function RootLayout(){
+    return (
     <AuthProvider>
-    <Stack
-      >
-      <Stack.Screen
-      name='stack-screens/home'
-      options={{
-        headerShown:false,
-      }}
-      />
-      <Stack.Screen
-      name='stack-screens/QuestionScreen'
-      options={{
-        headerShown:false
-      }}
-      />
-      <Stack.Screen
-      name='stack-screens/RecorderScreen'
-      options={{
-        headerShown:false
-      }}
-      />
-      <Stack.Screen
-      name='stack-screens/PhoneNumberScreen'
-      options={{
-        headerShown:false
-      }}
-      />
-      <Stack.Screen
-      name='stack-screens/OTPScreen'
-      options={{
-        headerShown:false
-      }}
-      />
-    </Stack>
+        <Slot/>
     </AuthProvider>
-  )
+    );
 }
-
-export default MainLayout
