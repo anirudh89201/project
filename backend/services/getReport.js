@@ -17,3 +17,21 @@ export const getReports = async(EmailID) => {
         console.log("DynamoDB error",error)
     }
 }   
+export const getLatestReport = async(EmailID) => {
+    console.log("Email ID",EmailID)
+    const params = {
+        TableName:"Users",
+        KeyConditionExpression:"EmailID = :email",
+        ExpressionAttributeValues:{
+            ":email": EmailID
+        },
+        ScanIndexForward:false,
+        Limit:1
+    }
+    try{
+        const response = await ddbDocClient.send(new QueryCommand(params))
+        return response.Items?.[0]
+    }catch(error){
+        console.log("Dynamo DB error",error)
+    }
+}

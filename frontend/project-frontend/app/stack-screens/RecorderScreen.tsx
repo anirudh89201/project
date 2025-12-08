@@ -1,13 +1,23 @@
 import {View,Text, TouchableOpacity,StyleSheet } from 'react-native'
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext } from 'react'
 import useRecorder from "../../hooks/useRecorder.js"
 import { AuthContext } from '@/context/auth-context.js';
+import { router } from 'expo-router';
 const RecorderScreen = () => {
   const {token} = useContext(AuthContext)
-  const handleStop = async() => {
-    console.log("Hello:=" +token)
-    await stopRecording(token)
+  const handleStop = async () => {
+  try {
+    const result = await stopRecording(token);
+    console.log(result)
+    if (result?.success) {
+      router.replace("/stack-screens/ReportScreen");
+    }
+  } catch (err) {
+    console.error(err);
+    alert("Failed to stop recording");
   }
+};
+
     const {
         isRecording,
         isPaused,

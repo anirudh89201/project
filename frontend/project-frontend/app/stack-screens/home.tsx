@@ -1,7 +1,6 @@
 import {Image,Text, TouchableOpacity, View } from 'react-native'
 import React, { useContext, useEffect } from 'react'
 import "../../global.css"
-import * as SecureStorage from "expo-secure-store"
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { router } from 'expo-router'
 import { AuthContext } from '@/context/auth-context'

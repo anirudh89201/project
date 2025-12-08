@@ -22,7 +22,7 @@ export const getReport = async (audioFile, Question) => {
       throw new Error("Internal Server Error during processing of recording")
     }
     const response = await generateReport(text,Question)
-    console.log(response)
+    return response
   } catch (error) {
     console.log("Error:", error);
   }

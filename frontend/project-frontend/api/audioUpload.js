@@ -18,12 +18,12 @@ export const uploadAudio = async (fileUri,token) => {
     console.log(formData)
     console.log(token)
     const response = await axiosClient.post("/upload", formData, {
-      headers: { "Content-Type": "multipart/form-data" ,
+      headers: {
+                  "Content-Type":"multipart/form-data",
                   "Authorization":`Bearer ${token}`
               },
     });
-    console.log("U cam here?")
-    return response.data; // server response
+    return response; // server response
   } catch (err) {
     console.log("Upload error:", err.message);
     throw err; // rethrow to handle in component

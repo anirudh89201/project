@@ -1,6 +1,5 @@
 import { getToken } from "../config/jwttoken.js";
 import { SaveReportForUser } from "../services/SaveReport.js";
-import { getReports } from "../services/getReport.js";
 import { initiateOTP } from "../services/initiateOTP.js";
 import {getReport} from "../services/progressReport.js"
 import { otpStore } from "../store/otpStore.js";
@@ -14,7 +13,7 @@ export const handleUpload = async (req, res) => {
             if(req.user){
                 await SaveReportForUser(req.user.EmailID,response)
             }
-            return res.status(200).json({"message":`${response}`})
+            return res.status(200).json({success:true})
         } catch (error) {
            return res.status(500).json({"message":`${error.message}`})
         }
