@@ -27,31 +27,35 @@ export default function useRecorder() {
 
   // ---- TIMER ----
   const startTimer = () => {
+    if (timerRef.current) clearInterval(timerRef.current);
     timerRef.current = setInterval(() => {
       setDuration((d) => d + 1);
     }, 1000);
   };
 
-  const stopTimer = () => clearInterval(timerRef.current);
+  const stopTimer = () => {
+    if (timerRef.current) {
+      clearInterval(timerRef.current);
+      timerRef.current = null;
+    }
+  };
 
   // ---- START ----
   const startRecording = async () => {
     try {
-      if (recordingRef.current) {
-        await recordingRef.current.stopAndUnloadAsync();
-      }
-
+      // Always create a new Recording instance
       const recording = new Audio.Recording();
 
       await recording.prepareToRecordAsync(
         Audio.RecordingOptionsPresets.HIGH_QUALITY
       );
 
-      await recording.startAsync(); // start or resume
+      await recording.startAsync();
 
       recordingRef.current = recording;
       setIsRecording(true);
       setIsPaused(false);
+      setDuration(0);
       startTimer();
     } catch (err) {
       console.log("Error starting recording:", err);
@@ -61,26 +65,28 @@ export default function useRecorder() {
   // ---- PAUSE ----
   const pauseRecording = async () => {
     try {
-      if (!recordingRef.current) return;
+      const recording = recordingRef.current;
+      if (!recording) return;
 
-      await recordingRef.current.pauseAsync();
+      await recording.pauseAsync();
       setIsPaused(true);
       stopTimer();
     } catch (err) {
-      console.log("Error pausing:", err);
+      console.log("Error pausing recording:", err);
     }
   };
 
   // ---- RESUME ----
   const resumeRecording = async () => {
     try {
-      if (!recordingRef.current) return;
+      const recording = recordingRef.current;
+      if (!recording) return;
 
-      await recordingRef.current.startAsync(); // resume
+      await recording.startAsync(); // resumes
       setIsPaused(false);
       startTimer();
     } catch (err) {
-      console.log("Error resuming:", err);
+      console.log("Error resuming recording:", err);
     }
   };
 
@@ -92,21 +98,35 @@ export default function useRecorder() {
       const recording = recordingRef.current;
       if (!recording) return;
 
-      await recording.stopAndUnloadAsync();
+      try {
+        await recording.stopAndUnloadAsync();
+      } catch (e) {
+        console.log("Safe stop error:", e);
+      }
 
       const uri = recording.getURI();
 
-      setDuration(0);
+      // Reset recorder
+      recordingRef.current = null;
       setIsRecording(false);
       setIsPaused(false);
 
-      // Upload audio
-      if (uri) {
+      if (duration < 5) {
+        Alert.alert("Recording is too short!", "Speak at least 5 seconds.");
+        setDuration(0);
+        return { tooShort: true };
+      }
+
+      setDuration(0);
+
+      // Upload if valid
+      if (uri && token) {
         await uploadAudio(uri, token);
       }
-      return {success:true}
+
+      return { success: true };
     } catch (err) {
-      console.log("Error stopping:", err);
+      console.log("Error stopping recording:", err);
     }
   };
 
