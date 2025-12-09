@@ -114,7 +114,7 @@ export default function useRecorder() {
       if (duration < 5) {
         Alert.alert("Recording is too short!", "Speak at least 5 seconds.");
         setDuration(0);
-        return { tooShort: true };
+        return
       }
 
       setDuration(0);

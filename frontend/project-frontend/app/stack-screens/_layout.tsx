@@ -11,12 +11,6 @@ export const MainLayout = () => {
       }}
       />
       <Stack.Screen
-      name="ReportScreen"
-      options={{
-        headerShown:false
-      }}
-      />
-      <Stack.Screen
       name='QuestionScreen'
       options={{
         headerShown:false
@@ -40,6 +34,18 @@ export const MainLayout = () => {
         headerShown:false
       }}
       />
+    <Stack.Screen
+    name="ReportScreen"
+    options={{
+      headerShown:false
+    }}
+    />
+    <Stack.Screen
+    name="AllReports"
+    options={{
+      headerShown:false
+    }}
+    />
     </Stack>
   )
 }

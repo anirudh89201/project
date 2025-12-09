@@ -5,6 +5,10 @@ export const getReports = async(EmailID) => {
     const params = {
         TableName:"Users",
         KeyConditionExpression:"EmailID = :emailID AND begins_with(sk,:prefix)",
+        ProjectionExpression:"#res",
+        ExpressionAttributeNames:{
+            "#res":"response"
+        },
         ExpressionAttributeValues:{
             ":emailID":EmailID,
             ":prefix":"REPORT"
@@ -12,7 +16,10 @@ export const getReports = async(EmailID) => {
     };
     try{
         const response = await ddbDocClient.send(new QueryCommand(params))
-        console.log(response.Items)
+        if(response?.Items){
+            return response.Items
+        }
+        return []
     }catch(error){
         console.log("DynamoDB error",error)
     }

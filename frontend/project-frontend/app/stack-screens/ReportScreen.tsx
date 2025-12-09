@@ -1,12 +1,22 @@
 import { axiosClient } from "@/api/axiosClient";
 import { AuthContext } from "@/context/auth-context";
+import { useLocalSearchParams } from "expo-router";
 import { useContext, useEffect,useState } from "react";
 import { ActivityIndicator, ScrollView, View,Text } from "react-native";
  const ReportScreen = () => {
     const {token} = useContext(AuthContext)
+    const {data} = useLocalSearchParams();
     const [report,SetReport] = useState<any>(null);
     const [loading,SetLoading] = useState(true);
     useEffect(() => {
+      if(data){
+        const reportStr = Array.isArray(data)?data[0]:data
+        SetReport(JSON.parse(reportStr));
+        setTimeout(() => {
+          SetLoading(false)
+        },3000)
+        return;
+      }
         const getReport = async() => {
             try{
                 const req = await axiosClient.get("/report/latest",{
