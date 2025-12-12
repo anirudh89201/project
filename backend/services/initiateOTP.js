@@ -1,21 +1,16 @@
-import nodemailer from "nodemailer"
 import dotenv from "dotenv"
+import { Resend } from "resend";
 dotenv.config();
+const resend = new Resend(process.env.RESENDAPI_KEY)
 export const initiateOTP = async(EmailID) => {
     const otp = Math.floor(100000 + Math.random() * 900000);
-    const transport = nodemailer.createTransport({
-        service:"gmail",
-        auth:{
-            user:process.env.EMAIL,
-            pass:process.env.EMAIL_PASSWORD
-        }
-    })
+    
     const mailOptions = {
-        from:process.env.EMAIL,
+        from:"onboarding@resend.dev",
         to:EmailID,
         subject:"Your OTP code",
         text:`Your OTP is ${otp}`
     }
-    await transport.sendMail(mailOptions)
+    await resend.emails.send(mailOptions)
     return otp;
 }
