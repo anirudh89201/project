@@ -1,40 +1,32 @@
 import { axiosClient } from "@/api/axiosClient";
 import { AuthContext } from "@/context/auth-context";
-import { useLocalSearchParams } from "expo-router";
 import { useContext, useEffect,useState } from "react";
+import * as SecureStorage from "expo-secure-store";
+
 import { ActivityIndicator, ScrollView, View,Text } from "react-native";
  const ReportScreen = () => {
     const {token} = useContext(AuthContext)
-    const {data} = useLocalSearchParams();
     const [report,SetReport] = useState<any>(null);
     const [loading,SetLoading] = useState(true);
+    let ReportURL = '/report/latest';
     useEffect(() => {
-      if(data){
-        const reportStr = Array.isArray(data)?data[0]:data
-        SetReport(JSON.parse(reportStr));
-        setTimeout(() => {
-          SetLoading(false)
-        },3000)
-        return;
-      }
-        const getReport = async() => {
-            try{
-                const req = await axiosClient.get("/report/latest",{
-                    headers:{
-                        'Authorization':`Bearer ${token}`
-                    }
-                })
-                const data = JSON.parse(req.data.response)
-                console.log(report)
-                SetReport(data);
-            }catch(error){
-                console.log(error)
-                alert("Error generating Report..")
-            }finally{
-                SetLoading(false);
-            }
+      const getReport = async() => {
+        try{
+            const req = await axiosClient.get(`${ReportURL}`,{
+                headers:{
+                    'Authorization':`Bearer ${token}`
+                }
+            })
+            const data = JSON.parse(req.data.response)
+            console.log(report)
+            SetReport(data);
+        }catch(error){
+          alert(error)
+        }finally{
+            SetLoading(false);
         }
-        getReport();
+    }
+    getReport();      
     },[])
     if(loading){
         return (

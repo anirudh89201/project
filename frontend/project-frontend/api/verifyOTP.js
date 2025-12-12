@@ -13,5 +13,6 @@ export const verifyOTP = async(OTP,EmailID) => {
     }catch(err){
         const msg = err.response?.data?.message || "Something went wrong.."
         console.log("Error is:",msg)
+        return {data:msg}
     }
 }

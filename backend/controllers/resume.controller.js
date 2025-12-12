@@ -9,16 +9,20 @@ export const handleUpload = async (req, res) => {
             return res.status(404).json({ message: "File not found" });
         }
         try {
+            console.log(req.user.EmailID)
             const response = await getReport(req.file,req.body.Question)
             if(req.user){
                 await SaveReportForUser(req.user.EmailID,response)
             }
             return res.status(200).json({success:true})
         } catch (error) {
-           return res.status(500).json({"message":`${error.message}`})
+            console.log("Error message is:",error.message)
+            console.log(error.stack)
+           return res.status(500).json({message:`${error.message}`})
         }
     }catch(error){
         console.log(error.message)
+        return res.status(500).json({message:error.message})
     }
 };
 

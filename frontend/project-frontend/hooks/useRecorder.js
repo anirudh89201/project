@@ -2,6 +2,8 @@ import { useState, useRef, useEffect } from "react";
 import { Audio } from "expo-av";
 import { Alert } from "react-native";
 import { uploadAudio } from "../api/audioUpload.js";
+import * as SecureStorage from "expo-secure-store";
+
 
 export default function useRecorder() {
   const recordingRef = useRef(null);
@@ -12,18 +14,56 @@ export default function useRecorder() {
 
   // Permissions + Audio Mode
   useEffect(() => {
+  
     (async () => {
       const { status } = await Audio.requestPermissionsAsync();
       if (status !== "granted") {
         Alert.alert("Permission to access microphone was denied");
       }
-
+  
       await Audio.setAudioModeAsync({
         allowsRecordingIOS: true,
         playsInSilentModeIOS: true,
       });
     })();
+  
+    return () => {
+      // CLEANUP
+      (async () => {
+        try {
+          // stop timer if running
+          if (timerRef.current) {
+            clearInterval(timerRef.current);
+            timerRef.current = null;
+          }
+  
+          // stop & unload leftover recording
+          const rec = recordingRef.current;
+          if (rec) {
+            const status = await rec.getStatusAsync();
+            if (status.isRecording || status.isDoneRecording === false) {
+              try {
+                await rec.stopAndUnloadAsync();
+              } catch (e) {}
+            }
+          }
+  
+          recordingRef.current = null;
+          setIsRecording(false);
+          setIsPaused(false);
+  
+          // reset audio mode
+          await Audio.setAudioModeAsync({
+            allowsRecordingIOS: false,
+            playsInSilentModeIOS: false,
+          });
+        } catch (err) {
+          console.log("Cleanup error:", err);
+        }
+      })();
+    };
   }, []);
+  
 
   // ---- TIMER ----
   const startTimer = () => {
@@ -112,21 +152,21 @@ export default function useRecorder() {
       setIsPaused(false);
 
       if (duration < 5) {
-        Alert.alert("Recording is too short!", "Speak at least 5 seconds.");
         setDuration(0);
-        return
+        throw new Error("The recording is too short!!")
       }
 
       setDuration(0);
 
       // Upload if valid
       if (uri && token) {
-        await uploadAudio(uri, token);
+          await uploadAudio(uri, token);
+        
       }
 
       return { success: true };
     } catch (err) {
-      console.log("Error stopping recording:", err);
+      throw err
     }
   };
 

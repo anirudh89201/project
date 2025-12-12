@@ -17,17 +17,17 @@ export const getReport = async (audioFile, Question) => {
       return;
     }
     const text = transcript.text
-    console.log(text)
-    if(text.length == 0){
-      throw new Error("Internal Server Error during processing of recording")
+    if(text.length < 10){
+      throw new Error("No speech detected. Please speak clearly into the microphone")
     }
     const response = await generateReport(text,Question)
     return response
   } catch (error) {
     console.log("Error:", error);
+    throw new Error(error.message)
   }
 };
-export const generateReport = async (text, fillerWords, question) => {
+export const generateReport = async (text, question) => {
   const prompt = `
 You evaluate spoken English. Give a short, crisp JSON report. 
 Keep all fields brief and easy to read on a phone screen.

@@ -1,21 +1,28 @@
-import {View,Text, TouchableOpacity,Dimensions } from 'react-native'
-import React, { useContext } from 'react'
+import {View,Text, TouchableOpacity,Dimensions, ActivityIndicator } from 'react-native'
+import React, { useContext, useState } from 'react'
 import useRecorder from "../../hooks/useRecorder.js"
+import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { AuthContext } from '@/context/auth-context.js';
 import { router } from 'expo-router';
 const RecorderScreen = () => {
   const {token} = useContext(AuthContext)
+  const [loading,SetLoading] = useState(false);
   const handleStop = async () => {
   try {
+    SetLoading(true);
     const result = await stopRecording(token);
     console.log(result)
-    
     if (result?.success) {
       router.replace("/stack-screens/ReportScreen");
     }
   } catch (err) {
     console.error(err);
-    alert("Failed to stop recording");
+    if(err instanceof Error){
+      alert(err.message)
+    }else{
+      alert("Something went wrong")
+    }
+    SetLoading(false);
   }
 };
 
@@ -28,68 +35,59 @@ const RecorderScreen = () => {
         resumeRecording,
         stopRecording
       } = useRecorder();
-      return (
-        <View className="flex-1 justify-center items-center p-6 gap-8">
-
-        {/* Timer */}
-        <View
-          className={`w-64 h-64 rounded-full border-[14px] 
-          ${isRecording ? "border-red-500" : "border-gray-400"} 
-          justify-center items-center`}
-        >
-          <Text className="text-3xl font-extrabold text-gray-800">
-            {duration}s
-          </Text>
+      return loading ? (
+        <View className="flex-1 justify-center items-center bg-black">
+          <ActivityIndicator size="large" />
         </View>
+      ) : (
+        <View className="flex-1 justify-center items-center p-6 bg-black">
       
-        {/* Floating Button Row */}
-        <View className="w-full flex-row justify-center items-center gap-6 mt-4">
+          {/* Main Microphone Icon */}
+          <View className="items-center mb-10">
+            <Ionicons
+              name="mic"
+              size={120}
+              color={isRecording ? "#ff4d4d" : "#888"}
+            />
+            <Text className="text-white text-4xl mt-4 font-semibold">
+              {duration}s
+            </Text>
+          </View>
       
-          {/* Pause */}
-          {isRecording && !isPaused && (
-            <TouchableOpacity
-              className="bg-yellow-500 px-6 py-3 rounded-2xl shadow"
-              onPress={pauseRecording}
-            >
-              <Text className="text-white text-lg font-semibold">Pause</Text>
-            </TouchableOpacity>
-          )}
+          {/* Control Buttons */}
+          <View className="flex-row items-center gap-12">
       
-          {/* Start */}
-          {!isRecording && (
-            <TouchableOpacity
-              className="bg-blue-600 px-10 py-4 rounded-2xl shadow"
-              onPress={startRecording}
-            >
-              <Text className="text-white text-lg font-semibold">Start</Text>
-            </TouchableOpacity>
-          )}
+            {/* Pause */}
+            {isRecording && !isPaused && (
+              <TouchableOpacity onPress={pauseRecording}>
+                <Ionicons name="pause-circle" size={70} color="#facc15" />
+              </TouchableOpacity>
+            )}
       
-          {/* Resume */}
-          {isRecording && isPaused && (
-            <TouchableOpacity
-              className="bg-green-600 px-10 py-4 rounded-2xl shadow"
-              onPress={resumeRecording}
-            >
-              <Text className="text-white text-lg font-semibold">Resume</Text>
-            </TouchableOpacity>
-          )}
+            {/* Start */}
+            {!isRecording && (
+              <TouchableOpacity onPress={startRecording}>
+                <Ionicons name="play-circle" size={80} color="#3b82f6" />
+              </TouchableOpacity>
+            )}
       
-          {/* Done */}
-          {isRecording && (
-            <TouchableOpacity
-              className="bg-red-500 px-6 py-3 rounded-2xl shadow"
-              onPress={handleStop}
-            >
-              <Text className="text-white text-lg font-semibold">Done</Text>
-            </TouchableOpacity>
-          )}
+            {/* Resume */}
+            {isRecording && isPaused && (
+              <TouchableOpacity onPress={resumeRecording}>
+                <Ionicons name="play-circle" size={80} color="#22c55e" />
+              </TouchableOpacity>
+            )}
+      
+            {/* Stop */}
+            {isRecording && (
+              <TouchableOpacity onPress={handleStop}>
+                <MaterialIcons name="stop-circle" size={75} color="#ef4444" />
+              </TouchableOpacity>
+            )}
+      
+          </View>
         </View>
-      
-      </View>
-      
-      );
-      
+      ); 
     
 }
 

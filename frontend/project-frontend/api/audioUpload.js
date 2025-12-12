@@ -1,4 +1,3 @@
-import { useContext } from "react";
 import { axiosClient } from "../api/axiosClient";
 let Question = ""
 export const SetTopic = (Topic) => {
@@ -25,7 +24,8 @@ export const uploadAudio = async (fileUri,token) => {
     });
     return response; // server response
   } catch (err) {
-    console.log("Upload error:", err.message);
-    throw err; // rethrow to handle in component
+    console.log(err)
+    const message = err.response?.data?.message
+    throw new Error(message)
   }
 };

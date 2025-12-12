@@ -1,11 +1,14 @@
 import { Text, TouchableOpacity, View } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import {Questions} from "../../utils/topics.js"
 import { router } from 'expo-router'
 import { SetTopic } from '@/api/audioUpload.js'
+import { AuthContext } from '@/context/auth-context.js'
 const QuestionScreen = () => {
   const [Question,SetQuestion ] = useState("");
+  const {token} = useContext(AuthContext)
   useEffect(() => {
+    console.log(token)
     const q = Questions[Math.floor(Math.random() * Questions.length)]
     SetQuestion(q)
     SetTopic(q)
