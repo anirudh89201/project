@@ -12,7 +12,8 @@ app.get("/", (req, res) => res.status(200).json({ message: "Backend working..." 
 app.use("/upload", resumeRoutes);
 app.use("/auth",authRoutes)
 app.use("/report",Reportrouter)
-app.listen(3000,() => {
+const port = process.env.PORT || 3000
+app.listen(port,() => {
     console.log("Server listening on PORT 3000")
 })
 export default app;
