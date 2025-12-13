@@ -8,7 +8,9 @@
     "android": "expo run:android",
     "ios": "expo run:ios",
     "web": "expo start --web",
-    "lint": "expo lint"
+    "lint": "expo lint",
+    "eas-install":"npm ci",
+    "prebuild":"npm run eas-install"
   },
   "dependencies": {
     "@expo/vector-icons": "^15.0.3",
@@ -51,9 +53,11 @@
     "tailwindcss": "^3.4.18"
   },
   "devDependencies": {
+    "@types/babel__core": "^7.20.5",
     "@types/react": "~19.1.0",
     "eslint": "^9.25.0",
     "eslint-config-expo": "~10.0.0",
+    "prettier": "^3.7.4",
     "typescript": "~5.9.2"
   },
   "private": true
