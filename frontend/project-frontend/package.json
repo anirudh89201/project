@@ -9,8 +9,8 @@
     "ios": "expo run:ios",
     "web": "expo start --web",
     "lint": "expo lint",
-    "eas-install":"npm ci",
-    "prebuild":"npm run eas-install"
+    "eas-install": "npm ci",
+    "prebuild": "npm run eas-install"
   },
   "dependencies": {
     "@expo/vector-icons": "^15.0.3",
@@ -46,10 +46,11 @@
     "react-native": "0.81.5",
     "react-native-gesture-handler": "~2.28.0",
     "react-native-otp-entry": "^1.8.5",
+    "react-native-reanimated": "^4.2.0",
     "react-native-safe-area-context": "^5.4.0",
     "react-native-screens": "~4.16.0",
     "react-native-web": "~0.21.0",
-    "react-native-worklets": "0.5.1",
+    "react-native-worklets": "^0.7.1",
     "tailwindcss": "^3.4.18"
   },
   "devDependencies": {
