@@ -14,6 +14,7 @@ const Home = () => {
 
   useEffect(() => {
     const checkToken = async () => {
+      await SecureStorage.deleteItemAsync("authToken")
       console.log("Token:", token);
       const flag = await SecureStorage.getItemAsync("GuestMode")
       SetGuestMode(flag)
