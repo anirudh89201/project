@@ -25,7 +25,7 @@ const OTPScreen = () => {
       await signIn(response?.data?.token);
 
       // IMPORTANT: Do NOT turn loading off before navigating
-      router.replace("/stack-screens/QuestionScreen");
+      router.replace("/screens/QuestionScreen");
     } else {
       SetLoading(false); // Only turn it off on failure
       alert(response.data);

@@ -13,7 +13,7 @@ const RecorderScreen = () => {
     const result = await stopRecording(token);
     console.log(result)
     if (result?.success) {
-      router.replace("/stack-screens/ReportScreen");
+      router.replace("/screens/ReportScreen");
     }
   } catch (err) {
     console.error(err);

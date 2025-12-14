@@ -30,7 +30,7 @@ const QuestionScreen = () => {
 
     {/* Ready Button */}
     <TouchableOpacity
-      onPress={() => router.push("/stack-screens/RecorderScreen")}
+      onPress={() => router.push("/screens/RecorderScreen")}
       className="w-full bg-green-500 py-4 rounded-2xl mb-4 shadow-md active:bg-green-600"
     >
       <Text className="text-center text-white text-lg font-bold">
@@ -40,7 +40,7 @@ const QuestionScreen = () => {
 
     {/* View All Reports */}
     <TouchableOpacity
-      onPress={() => router.push("/stack-screens/AllReports")}
+      onPress={() => router.push("/screens/AllReports")}
       className="w-full bg-blue-500 py-4 rounded-2xl shadow-md active:bg-blue-600"
     >
       <Text className="text-center text-white text-lg font-bold">
