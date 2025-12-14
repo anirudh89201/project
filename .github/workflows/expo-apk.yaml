@@ -21,11 +21,11 @@ jobs:
         run: npm install -g eas-cli
 
       - name: Install frontend dependencies
-        working-directory: project-frontend
+        working-directory: frontend/project-frontend
         run: npm install
 
       - name: Build APK (Expo)
-        working-directory: project-frontend
+        working-directory: frontend/project-frontend
         env:
           EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
         run: |
@@ -33,4 +33,5 @@ jobs:
             --platform android \
             --profile preview \
             --non-interactive
+
 
