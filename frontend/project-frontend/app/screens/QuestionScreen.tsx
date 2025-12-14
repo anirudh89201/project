@@ -2,19 +2,21 @@ import { Text, TouchableOpacity, View } from 'react-native'
 import React, { useContext, useEffect, useState } from 'react'
 import {Questions} from "../../utils/topics.js"
 import { router } from 'expo-router'
-import { SetTopic } from '@/api/audioUpload.js'
+import {QuestionContext, QuestionProvider} from "../../context/question-context.js"
 import { AuthContext } from '@/context/auth-context.js'
 const QuestionScreen = () => {
   const [Question,SetQuestion ] = useState("");
   const {token} = useContext(AuthContext)
+  const {SetUserQuestion} = useContext(QuestionContext)
   useEffect(() => {
     console.log(token)
     const q = Questions[Math.floor(Math.random() * Questions.length)]
     SetQuestion(q)
-    SetTopic(q)
+    SetUserQuestion(q)
   },[])
   
   return (
+
     <View className="flex-1 bg-[#E8F7FF] justify-center items-center px-6">
       
     <Text className="text-2xl font-bold text-gray-900 mb-6 text-center">

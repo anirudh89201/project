@@ -14,8 +14,10 @@ const Home = () => {
 
   useEffect(() => {
     const checkToken = async () => {
-      await SecureStorage.deleteItemAsync("authToken")
-      console.log("Token:", token);
+      const token = await SecureStorage.getItemAsync("authToken")
+       if(token?.startsWith("guest")){
+        await SecureStorage.deleteItemAsync("authToken")
+       }
       const flag = await SecureStorage.getItemAsync("GuestMode")
       SetGuestMode(flag)
       if (token) {
@@ -52,7 +54,7 @@ const Home = () => {
 
       <View className='gap-4'>
         <TouchableOpacity
-          onPress={() => router.push('/stack-screens/PhoneNumberScreen')}
+          onPress={() => router.push('/screens/PhoneNumberScreen')}
           className="bg-orange-500 rounded-xl py-4 px-6 shadow-lg active:opacity-70"
         >
           <Text className="text-white text-center text-lg font-bold">

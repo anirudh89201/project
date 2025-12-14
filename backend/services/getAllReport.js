@@ -17,6 +17,7 @@ export const getReports = async(EmailID) => {
     try{
         const response = await ddbDocClient.send(new QueryCommand(params))
         if(response?.Items){
+          console.log(response.Items)
             return response.Items
         }
         return []

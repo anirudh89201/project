@@ -3,6 +3,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import { axiosClient } from '@/api/axiosClient';
 import { AuthContext } from '@/context/auth-context';
 import { router } from 'expo-router';
+import { AxiosError } from 'axios';
 type ReportState = {
     response:string
 }
@@ -21,7 +22,11 @@ const AllReports = () => {
                     SetReports(response.data)
                 }
             }catch(error){
-                console.log("Error is:",error)
+              if(error instanceof AxiosError){
+                alert(error.response?.data?.message)
+                router.replace("/screens/home")
+              }
+              console.log("Error is:",error)
             }
         }
         getData();
@@ -47,7 +52,7 @@ const AllReports = () => {
                 className="p-4 mb-3 bg-gray-100 rounded-xl"
                 onPress={() =>
                   router.push({
-                    pathname: "/stack-screens/ReportScreen",
+                    pathname: "/screens/ReportScreen",
                     params: { data: item.response },
                   })
                 }

@@ -4,28 +4,24 @@ import { initiateOTP } from "../services/initiateOTP.js";
 import {getReport} from "../services/progressReport.js"
 import { otpStore } from "../store/otpStore.js";
 export const handleUpload = async (req, res) => {
-    try{
-        if (!req.file) {
-            return res.status(404).json({ message: "File not found" });
-        }
-        try {
-            console.log(req.user.EmailID)
-            const response = await getReport(req.file,req.body.Question)
-            if(req.user){
-                await SaveReportForUser(req.user.EmailID,response)
-            }
-            return res.status(200).json({success:true})
-        } catch (error) {
-            console.log("Error message is:",error.message)
-            console.log(error.stack)
-           return res.status(500).json({message:`${error.message}`})
-        }
-    }catch(error){
-        console.log(error.message)
-        return res.status(500).json({message:error.message})
+    try {
+      if (!req.file) {
+        return res.status(404).json({ message: "File not found" });
+      }
+  
+      const response = await getReport(req.file, req.body.Question);
+  
+      if (req.user) {
+        await SaveReportForUser(req.user.EmailID, response);
+      }
+  
+      return res.status(200).json({ success: true });
+    } catch (error) {
+      console.error("handleUpload error:", error.message);
+      return res.status(400).json({ message: error.message });  // always respond
     }
-};
-
+  };
+  
 export const sendOTP = async(req,res) => {
 
     const {EmailID} = req.body;

@@ -4,29 +4,34 @@ import { openaiClient } from "../config/openaiClient.js";
 
 export const getReport = async (audioFile, Question) => {
   try {
-    console.log("Received file:", audioFile,"Question:",Question);
-    // Convert multer buffer → stream
+    if (!audioFile || !audioFile.buffer.length) {
+      throw new Error("Audio file missing");
+    }
+
     const audioStream = Readable.from(audioFile.buffer);
     const transcript = await Assemblyclient.transcripts.transcribe({
-      audio:audioStream,
-      disfluencies:true
-    })
+      audio: audioStream,
+      disfluencies: true
+    });
 
-    if(transcript.status === "error"){
-      console.error("Transcription failed",transcript.error)
-      return;
+    if (!transcript || transcript.status === "error") {
+      throw new Error(`Transcription failed: ${transcript?.error || "Unknown error"}`);
     }
-    const text = transcript.text
-    if(text.length < 10){
-      throw new Error("No speech detected. Please speak clearly into the microphone")
+
+    const text = transcript.text;
+    if (!text || text.length < 10) {
+      throw new Error("No speech detected. Please speak clearly into the microphone");
     }
-    const response = await generateReport(text,Question)
-    return response
+
+    const response = await generateReport(text, Question);
+    return response;
+
   } catch (error) {
-    console.log("Error:", error);
-    throw new Error(error.message)
+    console.error("getReport error:", error.message);
+    throw error;  // bubble up to handleUpload
   }
 };
+
 export const generateReport = async (text, question) => {
   const prompt = `
 You evaluate spoken English. Give a short, crisp JSON report. 

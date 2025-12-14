@@ -4,13 +4,15 @@ import useRecorder from "../../hooks/useRecorder.js"
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { AuthContext } from '@/context/auth-context.js';
 import { router } from 'expo-router';
+import { QuestionContext } from '@/context/question-context.js';
 const RecorderScreen = () => {
   const {token} = useContext(AuthContext)
   const [loading,SetLoading] = useState(false);
+  const {Question} = useContext(QuestionContext)
   const handleStop = async () => {
   try {
     SetLoading(true);
-    const result = await stopRecording(token);
+    const result = await stopRecording(token,Question);
     console.log(result)
     if (result?.success) {
       router.replace("/screens/ReportScreen");
@@ -22,6 +24,7 @@ const RecorderScreen = () => {
     }else{
       alert("Something went wrong")
     }
+  }finally{
     SetLoading(false);
   }
 };

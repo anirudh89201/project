@@ -1,14 +1,20 @@
 import jwt from "jsonwebtoken"
 
 export const optionalJWT = (req, res, next) => {
+    console.log("Okay hello??")
     const authHeader = req.headers.authorization;
+    console.log("Auth header:",authHeader)
 
-    if (!authHeader) {
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
         req.user = null;
         return next();
     }
-
+    
     const token = authHeader.split(" ")[1];
+        if (!authHeader) {
+        req.user = null;
+        return next();
+    }
 
     // 1. Guest token logic
     if (token.startsWith("guest_")) {
@@ -22,6 +28,11 @@ export const optionalJWT = (req, res, next) => {
         req.user = decoded;
         return next();
     } catch (err) {
+        if(err.name === "TokenExpiredError"){
+            return res.status(401).json({
+                message:"Session Expired. Please Login again"
+            })
+        }
         req.user = null;
         return next();
     }
