@@ -20,7 +20,7 @@ const Home = () => {
       SetGuestMode(flag)
       if (token) {
         // someone is logged in OR guest mode exists
-        router.replace("/stack-screens/QuestionScreen");
+        router.replace("/screens/QuestionScreen");
       }
 
       setLoading(false);
@@ -35,7 +35,7 @@ const Home = () => {
     await SecureStorage.setItemAsync("authToken", guestId);
     await SecureStorage.setItemAsync("GuestMode", "true");
 
-    router.replace("/stack-screens/QuestionScreen");
+    router.replace("/screens/QuestionScreen");
   };
 
   if (loading) return null;
