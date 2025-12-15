@@ -1,11 +1,12 @@
 import { View, Text, TouchableOpacity, ActivityIndicator } from 'react-native';
 import React, { useContext, useState } from 'react';
-import { router, useLocalSearchParams } from 'expo-router';
+import { router, useLocalSearchParams, useNavigation } from 'expo-router';
 import { OtpInput } from "react-native-otp-entry";
 import { verifyOTP } from "../../api/verifyOTP.js";
 import { AuthContext } from '@/context/auth-context.js';
 
 const OTPScreen = () => {
+  const navigation = useNavigation();
   const { signIn } = useContext(AuthContext);
   const { EmailID } = useLocalSearchParams();
   const [OTP, SetOTP] = useState("");
@@ -23,6 +24,11 @@ const OTPScreen = () => {
 
     if (response?.success) {
       await signIn(response?.data?.token);
+      // After OTP verification / first-time login
+    // navigation.reset({
+    //   index: 0,
+    //   routes: [{ name: "/screens/QuestionScreen" } as any],
+    // });
 
       // IMPORTANT: Do NOT turn loading off before navigating
       router.replace("/screens/QuestionScreen");

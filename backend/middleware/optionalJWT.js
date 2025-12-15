@@ -28,11 +28,6 @@ export const optionalJWT = (req, res, next) => {
         req.user = decoded;
         return next();
     } catch (err) {
-        if(err.name === "TokenExpiredError"){
-            return res.status(401).json({
-                message:"Session Expired. Please Login again"
-            })
-        }
         req.user = null;
         return next();
     }
