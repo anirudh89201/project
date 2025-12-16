@@ -14,7 +14,7 @@ export default function PhoneNumberScreen() {
       const response = await sendOTP(EmailID)
       if(response.success){
   
-        router.push({pathname:'/screens/OTPScreen',params:{EmailID}}); // Navigate to OTP screen
+        router.replace({pathname:'/screens/OTPScreen',params:{EmailID}}); // Navigate to OTP screen
       }else{
         alert("Something Went Wrong..")
       }

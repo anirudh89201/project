@@ -4,6 +4,7 @@ import {Questions} from "../../utils/topics.js"
 import { router } from 'expo-router'
 import {QuestionContext, QuestionProvider} from "../../context/question-context.js"
 import { AuthContext } from '@/context/auth-context.js'
+import { CommonActions } from '@react-navigation/native'
 const QuestionScreen = () => {
   const [Question,SetQuestion ] = useState("");
   const {token} = useContext(AuthContext)

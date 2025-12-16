@@ -16,7 +16,7 @@ const Home = () => {
     const checkToken = async () => {
       const token = await SecureStorage.getItemAsync("authToken")
       if(token?.startsWith("guest")){
-         await SecureStorage.deleteItemAsync("authToken")
+        await SecureStorage.deleteItemAsync("authToken")
          }
       const flag = await SecureStorage.getItemAsync("GuestMode")
       SetGuestMode(flag)
