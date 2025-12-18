@@ -31,6 +31,7 @@ const OTPScreen = () => {
     // });
 
       // IMPORTANT: Do NOT turn loading off before navigating
+      router.dismissAll();
       router.replace("/screens/QuestionScreen");
     } else {
       SetLoading(false); // Only turn it off on failure
