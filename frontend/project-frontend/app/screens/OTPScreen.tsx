@@ -24,12 +24,6 @@ const OTPScreen = () => {
 
     if (response?.success) {
       await signIn(response?.data?.token);
-      // After OTP verification / first-time login
-    // navigation.reset({
-    //   index: 0,
-    //   routes: [{ name: "/screens/QuestionScreen" } as any],
-    // });
-
       // IMPORTANT: Do NOT turn loading off before navigating
       router.dismissAll();
       router.replace("/screens/QuestionScreen");
