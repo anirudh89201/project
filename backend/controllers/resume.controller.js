@@ -8,10 +8,11 @@ export const handleUpload = async (req, res) => {
       if (!req.file) {
         return res.status(404).json({ message: "File not found" });
       }
-  
+      
       const response = await getReport(req.file, req.body.Question);
-  
+      
       if (req.user) {
+        console.log(req.user.EmailID)
         await SaveReportForUser(req.user.EmailID, response);
       }
   

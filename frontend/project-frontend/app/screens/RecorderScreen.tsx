@@ -2,16 +2,17 @@ import {View,Text, TouchableOpacity,Dimensions, ActivityIndicator } from 'react-
 import React, { useContext, useState } from 'react'
 import useRecorder from "../../hooks/useRecorder.js"
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
-import { AuthContext } from '@/context/auth-context.js';
+import * as SecureStorage from "expo-secure-store";
 import { router } from 'expo-router';
 import { QuestionContext } from '@/context/question-context.js';
 const RecorderScreen = () => {
-  const {token} = useContext(AuthContext)
   const [loading,SetLoading] = useState(false);
   const {Question} = useContext(QuestionContext)
   const handleStop = async () => {
-  try {
+    try {
+    const token = await SecureStorage.getItemAsync("authToken")
     SetLoading(true);
+    console.log("Are u printing null:",token)
     const result = await stopRecording(token,Question);
     console.log(result)
     if (result?.success) {

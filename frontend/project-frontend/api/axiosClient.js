@@ -1,4 +1,4 @@
 import axios from "axios"
 export const axiosClient = axios.create({
-    baseURL: "https://project-2-zdfl.onrender.com/"
+    baseURL: "http://192.168.0.103:3000"
 });

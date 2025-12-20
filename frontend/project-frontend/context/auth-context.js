@@ -10,22 +10,19 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const checkToken = async () => {
-      try {
-        const storedToken = await SecureStorage.getItemAsync("authToken");
-        if (storedToken) {
-          setToken(storedToken);
-          SetSignedIn(true);
-        }
-      } catch (error) {
-        console.log("Error reading token:", error);
-      } finally {
-        SetLoading(false);
+      const storedToken = await SecureStorage.getItemAsync("authToken");
+  
+      if (storedToken) {
+        setToken(storedToken);
+        SetSignedIn(true);
       }
+  
+      SetLoading(false);
     };
-
+  
     checkToken();
   }, []);
-
+  
   const signIn = async (newToken) => {
     await SecureStorage.setItemAsync("authToken", String(newToken));
     setToken(newToken);
@@ -34,6 +31,7 @@ export const AuthProvider = ({ children }) => {
 
   const signOut = async () => {
     await SecureStorage.deleteItemAsync("authToken");
+    console.log("Signing outt...")
     setToken(null);
     SetSignedIn(false);
   };
