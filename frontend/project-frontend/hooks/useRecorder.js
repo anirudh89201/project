@@ -158,17 +158,11 @@ export default function useRecorder() {
 
       setDuration(0);
 
-      // Upload if valid
-      console.log("1")
       if (uri && token) {
-          console.log("2")
           await uploadAudio(uri, token,Question);
-          console.log("3")
       }
-      console.log("4")
       return { success: true };
     } catch (err) {
-      console.log("Are U coming here??")
       throw err
     }
   };

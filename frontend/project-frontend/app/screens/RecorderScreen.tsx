@@ -41,6 +41,7 @@ const RecorderScreen = () => {
       return loading ? (
         <View className="flex-1 justify-center items-center bg-black">
           <ActivityIndicator size="large" />
+          <Text className='text-small font-bold text-white mt-2'>Getting ur report ready..</Text>
         </View>
       ) : (
         <View className="flex-1 justify-center items-center p-6 bg-black">
