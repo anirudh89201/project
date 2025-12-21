@@ -10,24 +10,19 @@ import { AuthContext } from '@/context/auth-context'
 const Home = () => {
   const {token,signIn,signOut} = useContext(AuthContext);
   const [loading, setLoading] = useState(true);
-  const [GuestMode,SetGuestMode] = useState<boolean|null>(false);
+  const [GuestMode,SetGuestMode] = useState<boolean>(true);
 
-  const hasHandledGuestRef = useRef(false);
 
 useEffect(() => {
   const checkToken = async () => {
-    if (hasHandledGuestRef.current) return;
     const guestUsedOnce = await SecureStorage.getItemAsync("guestUsedOnce");
-    SetGuestMode(true)
-
-    if (guestUsedOnce === "completed" && token?.startsWith("guest")) {
-      hasHandledGuestRef.current = true;
+    const newToken = await SecureStorage.getItemAsync("authToken")
+    if (guestUsedOnce === "true" && newToken?.startsWith("guest")) {
       await signOut();
-      setLoading(false);
-      return;
+      SetGuestMode(false)
+      setLoading(false)
     }
-
-    if (token) {
+    if (newToken && !newToken?.startsWith("guest")) {
       router.replace("/screens/QuestionScreen");
     }
 
@@ -41,7 +36,7 @@ useEffect(() => {
   const guestMode = async () => {
     const guestId = "guest_" + Math.random().toString(36).substring(2, 10);
 
-    await SecureStorage.setItemAsync("guestUsedOnce", "started"); // irreversible
+    await SecureStorage.setItemAsync("guestUsedOnce", "true"); // irreversible
     await signIn(guestId);
   
     router.replace("/screens/QuestionScreen");
@@ -72,9 +67,9 @@ useEffect(() => {
 
         <TouchableOpacity
           onPress={guestMode}
-          disabled={Boolean(GuestMode)}
+          disabled={!Boolean(GuestMode)}
           className={`bg-orange-500 rounded-xl py-4 px-6 shadow-lg active:opacity-70 ${
-            Boolean(GuestMode) ? 'opacity-50' : 'opacity-100'
+            !Boolean(GuestMode) ? 'opacity-50' : 'opacity-100'
           }`}        >
           <Text className="text-white text-center text-lg font-bold">
             Guest Mode

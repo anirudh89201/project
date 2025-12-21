@@ -20,10 +20,6 @@ import { ActivityIndicator, ScrollView, View,Text } from "react-native";
             const data = JSON.parse(req.data.response)
             console.log(report)
             SetReport(data);
-            const guestToken = await SecureStorage.getItemAsync("guestUsedOnce")
-            if(guestToken === "started"){
-              await SecureStorage.setItemAsync("guestUsedOnce","completed")
-            }
         }catch(error){
           alert(error)
         }finally{
