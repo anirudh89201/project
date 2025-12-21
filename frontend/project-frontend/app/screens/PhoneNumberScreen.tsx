@@ -29,9 +29,10 @@ export default function PhoneNumberScreen() {
     SetValid(emailRegex.test(value))
   }
   return loading ? (
-    <View className='flex-1 justify-center items-center'>
-      <ActivityIndicator size={'large'}/>
-    </View>
+    <View className="flex-1 justify-center items-center bg-black">
+    <ActivityIndicator size="large" />
+    <Text className='text-small font-bold text-white mt-2'>Processing OTP..</Text>
+  </View>
   ):(
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
